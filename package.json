@@ -14,5 +14,18 @@
     "typecheck": "pnpm -r --if-present typecheck",
     "lint": "eslint .",
     "test": "vitest run"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "^16",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "jsdom": "^26",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native-web": "^0.21",
+    "typescript": "~5.9",
+    "vitest": "^3",
+    "@testing-library/dom": "^10"
   }
 }
