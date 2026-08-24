@@ -1,19 +1,16 @@
+import { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Avatar } from '@ibit/ui';
 
 import { colors, ROW_HEIGHT } from '../../../shared/theme';
+import type { MessageItem } from '../model/types';
 
 type RowContentProps = {
-  item: {
-    id: string;
-    name: string;
-    text: string;
-    avatarUrl?: string;
-  };
+  item: MessageItem;
 };
 
-export function RowContent({ item }: RowContentProps) {
+function RowContentImpl({ item }: RowContentProps) {
   return (
     <View style={styles.container}>
       <Avatar
@@ -31,6 +28,12 @@ export function RowContent({ item }: RowContentProps) {
     </View>
   );
 }
+
+/**
+ * Memoized: deletion keeps survivor object identity, so unchanged rows skip
+ * re-render when a neighbor is swiped away.
+ */
+export const RowContent = memo(RowContentImpl);
 
 const styles = StyleSheet.create({
   container: {

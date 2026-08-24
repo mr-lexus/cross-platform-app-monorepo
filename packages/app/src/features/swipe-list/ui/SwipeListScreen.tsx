@@ -1,35 +1,79 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from 'react-native';
+import type { ListRenderItemInfo } from 'react-native';
 
-import { colors } from '../../../shared/theme';
-import { RowContent } from './RowContent';
+import { colors, ROW_HEIGHT } from '../../../shared/theme';
+import { createMockItems } from '../model/mockData';
+import { deleteItem } from '../model/deleteItem';
+import type { MessageItem } from '../model/types';
+import { SwipeableRow } from './SwipeableRow';
 
-// Hardcoded 10 items for the todo-6 placeholder; the deterministic 1000-item
-// model arrives in todo 8 (`createMockItems`).
-const PLACEHOLDER_ITEMS = [
-  { id: 'ph-1', name: 'Alice Johnson', text: 'Hey, are we still on for tomorrow?', avatarUrl: 'https://i.pravatar.cc/150?u=ph-1' },
-  { id: 'ph-2', name: 'Bob Smith', text: 'Attached the final design files.' },
-  { id: 'ph-3', name: 'Charlie Davis', text: 'Can you review my PR when you have a sec?', avatarUrl: 'https://i.pravatar.cc/150?u=ph-3' },
-  { id: 'ph-4', name: 'Diana Prince', text: 'Lunch is here! Come down.' },
-  { id: 'ph-5', name: 'Ethan Hunt', text: 'Mission accomplished.' },
-  { id: 'ph-6', name: 'Fiona Gallagher', text: "Don't forget to pay the utility bill." },
-  { id: 'ph-7', name: 'George Miller', text: 'Mad Max screening this weekend?' },
-  { id: 'ph-8', name: 'Hannah Lee', text: 'See you at the team offsite next week.' },
-  { id: 'ph-9', name: 'Ivan Petrov', text: 'Pushed the hotfix to staging.' },
-  { id: 'ph-10', name: 'Julia Chen', text: 'Thanks for the help yesterday!' },
-];
+const SHELL_MAX_WIDTH = 475;
+const ITEM_COUNT = 1000;
 
 export function SwipeListScreen() {
+  const [items, setItems] = useState(() => createMockItems(ITEM_COUNT));
+  const { width: windowWidth } = useWindowDimensions();
+  const containerWidth = Math.min(windowWidth, SHELL_MAX_WIDTH);
+
+  const onDelete = useCallback((id: string) => {
+    setItems((prev) => deleteItem(prev, id));
+  }, []);
+
+  const renderItem = useCallback(
+    ({ item }: ListRenderItemInfo<MessageItem>) => (
+      <SwipeableRow
+        item={item}
+        onDelete={onDelete}
+        containerWidth={containerWidth}
+      />
+    ),
+    [onDelete, containerWidth],
+  );
+
+  const resetList = useCallback(() => {
+    setItems(() => createMockItems(ITEM_COUNT));
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Messages</Text>
         <Text style={styles.subtitle}>Swipe left or right to delete</Text>
       </View>
-      <View style={styles.list}>
-        {PLACEHOLDER_ITEMS.map((item) => (
-          <RowContent key={item.id} item={item} />
-        ))}
-      </View>
+      <FlatList
+        data={items}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        getItemLayout={(_, index) => ({
+          length: ROW_HEIGHT,
+          offset: ROW_HEIGHT * index,
+          index,
+        })}
+        removeClippedSubviews={false}
+        style={styles.list}
+        contentContainerStyle={styles.listContent}
+        ListEmptyComponent={<EmptyState onReset={resetList} />}
+      />
+    </View>
+  );
+}
+
+function EmptyState({ onReset }: { onReset: () => void }) {
+  return (
+    <View style={styles.empty}>
+      <Text style={styles.emptyTitle}>No messages</Text>
+      <Text style={styles.emptyText}>You have swiped away all your messages.</Text>
+      <Pressable style={styles.resetButton} onPress={onReset}>
+        <Text style={styles.resetButtonText}>Reset List</Text>
+      </Pressable>
     </View>
   );
 }
@@ -58,5 +102,37 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
+  },
+  listContent: {
+    flexGrow: 1,
+  },
+  empty: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 32,
+  },
+  emptyTitle: {
+    color: colors.text,
+    fontSize: 18,
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  emptyText: {
+    color: colors.textSecondary,
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  resetButton: {
+    marginTop: 24,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    backgroundColor: '#3b82f6',
+  },
+  resetButtonText: {
+    color: colors.surface,
+    fontSize: 14,
+    fontWeight: '500',
   },
 });
