@@ -1,12 +1,12 @@
 export const AVATAR_PALETTE = [
-  '#3b82f6',
-  '#10b981',
-  '#f59e0b',
-  '#8b5cf6',
-  '#ef4444',
-  '#ec4899',
-  '#6366f1',
-  '#06b6d4',
+  "#3b82f6",
+  "#10b981",
+  "#f59e0b",
+  "#8b5cf6",
+  "#ef4444",
+  "#ec4899",
+  "#6366f1",
+  "#06b6d4",
 ] as const;
 
 export type AvatarColor = (typeof AVATAR_PALETTE)[number];

@@ -1,14 +1,14 @@
-import { memo, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
+import { memo, useEffect } from "react";
+import { StyleSheet } from "react-native";
+import { GestureDetector, usePanGesture } from "react-native-gesture-handler";
 import Animated, {
   Extrapolation,
   interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-} from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
+} from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 
 import {
   COLLAPSE_DURATION,
@@ -17,11 +17,11 @@ import {
   SNAP_BACK_DURATION,
   SNAP_BACK_EASING,
   SWIPE_THRESHOLD,
-} from '../../../shared/theme';
-import { isDeleteCommitted } from '../model/swipeGuards';
-import type { MessageItem } from '../model/types';
-import { RowContent } from './RowContent';
-import { SwipeBackground } from './SwipeBackground';
+} from "../../../shared/theme";
+import { isDeleteCommitted } from "../model/swipeGuards";
+import type { MessageItem } from "../model/types";
+import { RowContent } from "./RowContent";
+import { SwipeBackground } from "./SwipeBackground";
 
 type SwipeableRowProps = {
   item: MessageItem;
@@ -29,7 +29,11 @@ type SwipeableRowProps = {
   containerWidth: number;
 };
 
-function SwipeableRowImpl({ item, onDelete, containerWidth }: SwipeableRowProps) {
+function SwipeableRowImpl({
+  item,
+  onDelete,
+  containerWidth,
+}: SwipeableRowProps) {
   const translateX = useSharedValue(0);
   const rowHeight = useSharedValue(ROW_HEIGHT);
   const isDeleting = useSharedValue(false);
@@ -38,14 +42,14 @@ function SwipeableRowImpl({ item, onDelete, containerWidth }: SwipeableRowProps)
     activeOffsetX: [-10, 10],
     failOffsetY: [-5, 5],
     onUpdate: (event) => {
-      'worklet';
+      "worklet";
       if (isDeleting.value) {
         return;
       }
       translateX.value = event.translationX;
     },
     onDeactivate: (event) => {
-      'worklet';
+      "worklet";
       if (isDeleting.value) {
         return;
       }
@@ -130,9 +134,9 @@ export const SwipeableRow = memo(SwipeableRowImpl);
 
 const styles = StyleSheet.create({
   wrapper: {
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   foreground: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
   },
 });

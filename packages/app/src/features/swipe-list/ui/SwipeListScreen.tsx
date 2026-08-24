@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 import {
   FlatList,
   Pressable,
@@ -6,14 +6,14 @@ import {
   Text,
   View,
   useWindowDimensions,
-} from 'react-native';
-import type { ListRenderItemInfo } from 'react-native';
+} from "react-native";
+import type { ListRenderItemInfo } from "react-native";
 
-import { colors, ROW_HEIGHT } from '../../../shared/theme';
-import { createMockItems } from '../model/mockData';
-import { deleteItem } from '../model/deleteItem';
-import type { MessageItem } from '../model/types';
-import { SwipeableRow } from './SwipeableRow';
+import { colors, ROW_HEIGHT } from "../../../shared/theme";
+import { createMockItems } from "../model/mockData";
+import { deleteItem } from "../model/deleteItem";
+import type { MessageItem } from "../model/types";
+import { SwipeableRow } from "./SwipeableRow";
 
 const SHELL_MAX_WIDTH = 475;
 const ITEM_COUNT = 1000;
@@ -70,7 +70,9 @@ function EmptyState({ onReset }: { onReset: () => void }) {
   return (
     <View style={styles.empty}>
       <Text style={styles.emptyTitle}>No messages</Text>
-      <Text style={styles.emptyText}>You have swiped away all your messages.</Text>
+      <Text style={styles.emptyText}>
+        You have swiped away all your messages.
+      </Text>
       <Pressable style={styles.resetButton} onPress={onReset}>
         <Text style={styles.resetButtonText}>Reset List</Text>
       </Pressable>
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
   title: {
     color: colors.text,
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   subtitle: {
     color: colors.textSecondary,
@@ -108,31 +110,31 @@ const styles = StyleSheet.create({
   },
   empty: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 32,
   },
   emptyTitle: {
     color: colors.text,
     fontSize: 18,
-    fontWeight: '500',
+    fontWeight: "500",
     marginBottom: 4,
   },
   emptyText: {
     color: colors.textSecondary,
     fontSize: 14,
-    textAlign: 'center',
+    textAlign: "center",
   },
   resetButton: {
     marginTop: 24,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: '#3b82f6',
+    backgroundColor: "#3b82f6",
   },
   resetButtonText: {
     color: colors.surface,
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
   },
 });

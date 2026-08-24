@@ -1,10 +1,10 @@
-import { memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { memo } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-import { Avatar } from '@ibit/ui';
+import { Avatar } from "@ibit/ui";
 
-import { colors, ROW_HEIGHT } from '../../../shared/theme';
-import type { MessageItem } from '../model/types';
+import { colors, ROW_HEIGHT } from "../../../shared/theme";
+import type { MessageItem } from "../model/types";
 
 type RowContentProps = {
   item: MessageItem;
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
   container: {
     height: ROW_HEIGHT,
     backgroundColor: colors.surface,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.hairline,
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   name: {
     color: colors.text,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   message: {
     color: colors.textSecondary,

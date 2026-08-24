@@ -1,12 +1,12 @@
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from "react-native";
 import Animated, {
   Extrapolation,
   interpolate,
   useAnimatedStyle,
-} from 'react-native-reanimated';
-import type { SharedValue } from 'react-native-reanimated';
+} from "react-native-reanimated";
+import type { SharedValue } from "react-native-reanimated";
 
-import { colors } from '../../../shared/theme';
+import { colors } from "../../../shared/theme";
 
 type SwipeBackgroundProps = {
   translateX: SharedValue<number>;
@@ -19,7 +19,10 @@ type SwipeBackgroundProps = {
  * mirroring the prototype's feedback — driven entirely from the shared
  * value, never from React state.
  */
-export function SwipeBackground({ translateX, threshold }: SwipeBackgroundProps) {
+export function SwipeBackground({
+  translateX,
+  threshold,
+}: SwipeBackgroundProps) {
   const backgroundStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
       Math.abs(translateX.value),
@@ -30,7 +33,10 @@ export function SwipeBackground({ translateX, threshold }: SwipeBackgroundProps)
   }));
 
   return (
-    <Animated.View style={[styles.background, backgroundStyle]} pointerEvents="none">
+    <Animated.View
+      style={[styles.background, backgroundStyle]}
+      pointerEvents="none"
+    >
       <Text style={styles.affordance}>Delete</Text>
       <Text style={styles.affordance}>Delete</Text>
     </Animated.View>
@@ -39,20 +45,20 @@ export function SwipeBackground({ translateX, threshold }: SwipeBackgroundProps)
 
 const styles = StyleSheet.create({
   background: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
     backgroundColor: colors.delete,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 24,
   },
   affordance: {
     color: colors.surface,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });

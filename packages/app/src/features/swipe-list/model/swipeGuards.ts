@@ -10,6 +10,6 @@ export function isDeleteCommitted(
   translationX: number,
   threshold: number,
 ): boolean {
-  'worklet';
+  "worklet";
   return Math.abs(translationX) > threshold;
 }

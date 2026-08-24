@@ -1,4 +1,4 @@
-import type { MessageItem } from './types';
+import type { MessageItem } from "./types";
 
 /**
  * Removes the item with the given id. Pure: survivors keep their object

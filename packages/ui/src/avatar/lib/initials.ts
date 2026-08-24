@@ -1,6 +1,6 @@
 const LETTER = /[A-Za-z]/;
 const WHITESPACE = /\s+/;
-const FALLBACK = '?';
+const FALLBACK = "?";
 
 export function getInitials(name: string): string {
   const trimmed = name.trim();
@@ -18,5 +18,5 @@ export function getInitials(name: string): string {
       initials.push(letter[0].toUpperCase());
     }
   }
-  return initials.length > 0 ? initials.join('') : FALLBACK;
+  return initials.length > 0 ? initials.join("") : FALLBACK;
 }

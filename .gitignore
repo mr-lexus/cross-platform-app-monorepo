@@ -77,3 +77,6 @@ Thumbs.db
 # Temp
 tmp/
 temp/
+
+# Playwright MCP session artifacts
+.playwright-mcp/

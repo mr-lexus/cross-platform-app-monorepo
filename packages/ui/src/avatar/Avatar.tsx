@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { useState } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 
-import { getAvatarColor } from './lib/colors';
-import { getInitials } from './lib/initials';
+import { getAvatarColor } from "./lib/colors";
+import { getInitials } from "./lib/initials";
 
 export type AvatarProps = {
   name: string;
@@ -34,7 +34,7 @@ export function Avatar({ name, source, size = DEFAULT_SIZE }: AvatarProps) {
     >
       <Text
         accessibilityElementsHidden
-        importantForAccessibility={showImage ? 'no-hide-descendants' : 'auto'}
+        importantForAccessibility={showImage ? "no-hide-descendants" : "auto"}
         style={[styles.initials, { fontSize: size * INITIALS_FONT_RATIO }]}
       >
         {initials}
@@ -52,12 +52,12 @@ export function Avatar({ name, source, size = DEFAULT_SIZE }: AvatarProps) {
 
 const styles = StyleSheet.create({
   container: {
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
   },
   initials: {
-    color: '#ffffff',
-    fontWeight: '700',
+    color: "#ffffff",
+    fontWeight: "700",
   },
 });

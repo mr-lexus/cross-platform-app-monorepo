@@ -1,9 +1,9 @@
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { StyleSheet, View } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { StyleSheet, View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-import { colors } from '../shared/theme';
-import { SwipeListScreen } from '../features/swipe-list/ui/SwipeListScreen';
+import { colors } from "../shared/theme";
+import { SwipeListScreen } from "../features/swipe-list/ui/SwipeListScreen";
 
 export function App() {
   return (
@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: colors.pageBackground },
   shell: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     maxWidth: 475,
-    alignSelf: 'center',
+    alignSelf: "center",
     backgroundColor: colors.pageBackground,
   },
 });

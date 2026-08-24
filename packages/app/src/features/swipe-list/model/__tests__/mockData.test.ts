@@ -1,31 +1,31 @@
-import { readFileSync } from 'node:fs';
-import { describe, expect, it } from 'vitest';
+import { readFileSync } from "node:fs";
+import { describe, expect, it } from "vitest";
 
-import { createMockItems } from '../mockData';
+import { createMockItems } from "../mockData";
 
-const VALID_AVATAR_PREFIX = 'https://i.pravatar.cc/';
-const BROKEN_AVATAR_HOST = 'invalid-avatars.example.com';
+const VALID_AVATAR_PREFIX = "https://i.pravatar.cc/";
+const BROKEN_AVATAR_HOST = "invalid-avatars.example.com";
 
-describe('createMockItems', () => {
+describe("createMockItems", () => {
   const items = createMockItems(1000);
 
-  it('creates exactly the requested number of items', () => {
+  it("creates exactly the requested number of items", () => {
     expect(items).toHaveLength(1000);
   });
 
-  it('assigns unique string ids', () => {
+  it("assigns unique string ids", () => {
     const ids = items.map((item) => item.id);
     expect(new Set(ids).size).toBe(ids.length);
     for (const id of ids) {
-      expect(typeof id).toBe('string');
+      expect(typeof id).toBe("string");
     }
   });
 
-  it('is deterministic — two calls deep-equal', () => {
+  it("is deterministic — two calls deep-equal", () => {
     expect(createMockItems(1000)).toEqual(createMockItems(1000));
   });
 
-  it('covers all three avatar states with at least 10% each', () => {
+  it("covers all three avatar states with at least 10% each", () => {
     let valid = 0;
     let missing = 0;
     let broken = 0;
@@ -43,11 +43,11 @@ describe('createMockItems', () => {
     expect(broken).toBeGreaterThanOrEqual(100);
   });
 
-  it('never uses Math.random (data generation is pure)', () => {
+  it("never uses Math.random (data generation is pure)", () => {
     const source = readFileSync(
-      'packages/app/src/features/swipe-list/model/mockData.ts',
-      'utf8',
+      "packages/app/src/features/swipe-list/model/mockData.ts",
+      "utf8",
     );
-    expect(source.includes('Math.random')).toBe(false);
+    expect(source.includes("Math.random")).toBe(false);
   });
 });

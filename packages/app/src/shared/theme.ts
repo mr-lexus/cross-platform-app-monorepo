@@ -1,14 +1,14 @@
-import { Easing } from 'react-native-reanimated';
+import { Easing } from "react-native-reanimated";
 
 export const colors = {
-  pageBackground: '#f9fafb',
-  listBackground: '#f9fafb',
-  surface: '#ffffff',
-  headerBorder: '#e5e7eb',
-  text: '#111827',
-  textSecondary: '#6b7280',
-  delete: '#ef4444',
-  hairline: '#f3f4f6',
+  pageBackground: "#f9fafb",
+  listBackground: "#f9fafb",
+  surface: "#ffffff",
+  headerBorder: "#e5e7eb",
+  text: "#111827",
+  textSecondary: "#6b7280",
+  delete: "#ef4444",
+  hairline: "#f3f4f6",
 } as const;
 
 export const spacing = {
