@@ -8,6 +8,9 @@ body {
 }
 
 .shell-frame {
+  /* The prototype relies on Tailwind's global border-box reset: its 475px
+     cap includes the bezel border. Without this the frame renders 491px. */
+  box-sizing: border-box;
   width: 100%;
   max-width: 475px;
   height: 100vh;
@@ -21,6 +24,18 @@ body {
 }
 
 @media (min-width: 476px) {
+  /* The prototype centers its container as a direct flex child of body; here
+   #root sits in between, so it must reproduce that centering itself while
+   keeping a definite width — otherwise it shrink-to-fits and .shell-frame's
+   width:100% resolves cyclically against content size: the frame paints
+   near-zero-width until the list mounts (CLS) and sticks to the top-left. */
+  #root {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .shell-frame {
     height: 90vh;
     border-radius: 24px;

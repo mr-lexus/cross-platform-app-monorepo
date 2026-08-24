@@ -36,6 +36,7 @@ export default tseslint.config(
       "apps/mobile/*.config.js",
       "apps/mobile/babel.config.js",
       "apps/mobile/index.js",
+      "apps/mobile/scripts/**/*.js",
     ],
     languageOptions: {
       globals: {
@@ -43,6 +44,8 @@ export default tseslint.config(
         require: "writable",
         __dirname: "writable",
         process: "writable",
+        setTimeout: "writable",
+        console: "writable",
       },
     },
     rules: {

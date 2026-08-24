@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "pod install --project-directory=ios && react-native run-ios",
+    "android": "node scripts/ensure-metro.js && react-native run-android",
+    "ios": "pod install --project-directory=ios && node scripts/ensure-metro.js && react-native run-ios",
     "start": "react-native start",
     "typecheck": "tsc -p ."
   },

@@ -21,6 +21,11 @@ react {
     //   The cli.js file which is the React Native CLI entrypoint. Default is ../../node_modules/react-native/cli.js
     cliFile = file("../../../../node_modules/react-native/cli.js")
 
+    // Hoisted pnpm monorepo: hermesc ships in the hermes-compiler npm package at the
+    // workspace root, while the plugin's auto-detection looks under apps/mobile/node_modules.
+    // %OS-BIN% is substituted by the plugin (osx-bin / linux-bin / win64-bin).
+    hermesCommand = file("../../../../node_modules/hermes-compiler/hermesc/%OS-BIN%/hermesc").absolutePath
+
     /* Variants */
     //   The list of variants to that are debuggable. For those we're going to
     //   skip the bundling of the JS bundle and the assets. Default is "debug", "debugOptimized".
