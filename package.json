@@ -1,0 +1,18 @@
+{
+  "name": "ibit-cross-platform-monorepo",
+  "private": true,
+  "packageManager": "pnpm@10.15.0",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "ios": "pnpm --filter @ibit/mobile ios",
+    "android": "pnpm --filter @ibit/mobile android",
+    "start": "pnpm --filter @ibit/mobile start",
+    "web": "pnpm --filter @ibit/web dev",
+    "build:web": "pnpm --filter @ibit/web build",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "lint": "eslint .",
+    "test": "vitest run"
+  }
+}

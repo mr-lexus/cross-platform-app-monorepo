@@ -1,0 +1,80 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# React Native
+ios/build/
+android/build/
+.gradle/
+.metro*
+*.log
+*.lock
+
+# iOS
+Pods/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+ios/Pods/
+ios/build/
+ios/DerivedData/
+ios/.xcode.env.local
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+*.keystore
+!debug.keystore
+.kotlin/
+
+# Expo (not used, but defensive)
+.expo/
+.expo-shared/
+
+# Misc
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local tool state (not part of project)
+.omo/
+.task/
+.codegraph
+
+# Testing
+coverage/
+.nyc_output/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# OS
+Thumbs.db
+
+# Temp
+tmp/
+temp/
