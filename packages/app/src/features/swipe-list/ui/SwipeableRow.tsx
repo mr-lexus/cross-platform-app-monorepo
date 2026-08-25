@@ -37,6 +37,10 @@ function SwipeableRowImpl({
   const translateX = useSharedValue(0);
   const rowHeight = useSharedValue(ROW_HEIGHT);
   const isDeleting = useSharedValue(false);
+  // Exactly-once commit gate: flipped before onDelete is handed off, by
+  // whichever path wins (animation completion or the unmount fallback), so a
+  // completed deletion commits exactly once even though both paths exist.
+  const isCommitSent = useSharedValue(false);
 
   const pan = usePanGesture({
     activeOffsetX: [-10, 10],
@@ -74,9 +78,10 @@ function SwipeableRowImpl({
               0,
               { duration: COLLAPSE_DURATION },
               (collapseFinished) => {
-                if (!collapseFinished) {
+                if (!collapseFinished || isCommitSent.value) {
                   return;
                 }
+                isCommitSent.value = true;
                 scheduleOnRN(onDelete, item.id);
               },
             );
@@ -93,11 +98,14 @@ function SwipeableRowImpl({
 
   useEffect(() => {
     return () => {
-      if (isDeleting.value) {
+      // Fallback for a row that leaves the tree while its deletion animation
+      // is still pending and the commit has not been handed to React yet.
+      if (isDeleting.value && !isCommitSent.value) {
+        isCommitSent.value = true;
         onDelete(item.id);
       }
     };
-  }, [isDeleting, item.id, onDelete]);
+  }, [isDeleting, isCommitSent, item.id, onDelete]);
 
   const wrapperStyle = useAnimatedStyle(() => ({
     height: rowHeight.value,

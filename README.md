@@ -13,8 +13,9 @@ motion kept off the React render path.
 
 - 1,000-item list, virtualized via `FlatList` (fixed row height + `getItemLayout`)
 - Reusable cross-platform `Avatar` component (`@ibit/ui`)
-- Three avatar states exercised by the mock data — valid image, missing image,
-  broken URL — all falling back to deterministic colored initials
+- Two avatar states exercised by the mock data — valid image and missing
+  image — with the broken-image fallback covered by Avatar unit tests; all
+  paths fall back to deterministic colored initials
 - Bidirectional swipe-to-delete (left or right)
 - Strict threshold: past 120px deletes, below it the row snaps back
 - Animated removal: slide-out → collapse → a single React state commit
@@ -77,7 +78,7 @@ Notes:
 ```bash
 npm run typecheck  # tsc across all four workspaces (strict)
 npm run lint       # ESLint flat config
-npm test           # Vitest — 34 tests across 6 files
+npm test           # Vitest — 35 tests across 6 files
 npm run build:web  # production web build → apps/web/dist
 ```
 
@@ -108,8 +109,8 @@ verification: [docs/VERIFICATION.md](docs/VERIFICATION.md).
   browsers have no UI-thread worklet runtime. Behavior is identical; the
   execution context differs and is documented rather than hidden.
 - Hermes is enabled on Android (confirmed present in release builds).
-- Snap-back uses `withTiming` with a fixed bezier instead of `withSpring`:
-  Reanimated springs are unsupported on the RNW layout path, and timing is
+- Snap-back uses `withTiming` with a fixed bezier instead of `withSpring`,
+  matching the reference prototype's easing and keeping the interaction
   deterministic across platforms.
 - Avatars load from `i.pravatar.cc`; offline runs show the initials fallback
   for those rows — the fallback working as designed.
@@ -117,12 +118,14 @@ verification: [docs/VERIFICATION.md](docs/VERIFICATION.md).
 ## Verification
 
 Web was verified live against the production build: render, virtualization,
-both swipe directions, threshold snap-back, rapid deletions, avatar tri-state
+both swipe directions, threshold snap-back, rapid deletions, avatar states
 and mouse drag. Android debug/release/AAB builds pass with Hermes confirmed in
 the release APK; render and mid-swipe were captured on an emulator. The iOS
-simulator build passes; launch, render and avatar fallback were captured,
-while interactive swipe was not re-executed during the final audit and is
-disclosed as such.
+simulator build passes; launch, render and avatar fallback were confirmed on a
+clean-room capture, but interactive swipe was not executed — touch injection
+is not possible in the verification environment (synthetic mouse clicks reach
+the Simulator but synthetic drags are not translated into touch gestures);
+this is disclosed truthfully.
 
 Details and per-check results: [docs/VERIFICATION.md](docs/VERIFICATION.md).
 

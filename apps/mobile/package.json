@@ -3,15 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "node scripts/ensure-metro.js && react-native run-android",
-    "ios": "pod install --project-directory=ios && node scripts/ensure-metro.js && react-native run-ios",
+    "android": "node scripts/ensure-metro.js android && react-native run-android",
+    "ios": "node scripts/ensure-metro.js ios && react-native run-ios",
     "start": "react-native start",
     "typecheck": "tsc -p ."
   },
   "dependencies": {
     "react": "19.2.3",
     "react-native": "0.87.0",
-    "@react-native/new-app-screen": "0.87.0",
     "@ibit/app": "*",
     "react-native-gesture-handler": "^3.2",
     "react-native-reanimated": "^4.6",
@@ -31,6 +30,6 @@
     "typescript": "~5.9"
   },
   "engines": {
-    "node": ">= 22.11.0"
+    "node": ">=22.13"
   }
 }

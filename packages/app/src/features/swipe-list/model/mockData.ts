@@ -32,20 +32,17 @@ const TEXTS = [
   "Call me when you are free.",
 ];
 
-// Tri-state avatars by modulo (50% valid / 30% missing / 20% broken) so every
-// Avatar rendering path is exercised in the stock 1000-item list.
-const BROKEN_AVATAR_HOST = "https://invalid-avatars.example.com";
+// Bi-state avatars by modulo (80% valid / 20% missing) so both Avatar
+// rendering paths stay exercised in the stock 1000-item list; the broken-image
+// fallback path is covered by Avatar unit tests rather than live unresolvable
+// URLs, keeping DevTools free of deliberate DNS errors.
 
 export function createMockItems(count: number): MessageItem[] {
   const items: MessageItem[] = [];
   for (let n = 0; n < count; n++) {
-    const slot = n % 10;
+    const slot = n % 20;
     const avatarUrl =
-      slot < 5
-        ? `https://i.pravatar.cc/150?u=item-${n}`
-        : slot < 8
-          ? undefined
-          : `${BROKEN_AVATAR_HOST}/item-${n}.png`;
+      slot < 16 ? `https://i.pravatar.cc/150?u=item-${n}` : undefined;
     items.push({
       id: `item-${n}`,
       name: NAMES[n % NAMES.length],

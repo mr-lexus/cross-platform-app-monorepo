@@ -1,9 +1,8 @@
 # Verification
 
-All results below come from a pre-submission audit executed on 2026-08-24 at
-commit `37f7527` on a clean working tree. Nothing is claimed that was not run
-or inspected during that audit; where a check relies on earlier executed
-evidence rather than a fresh run, it says so explicitly.
+All results below come from the final pre-submission verification performed
+after the npm-workspaces migration and final polish. Where a check relies on
+earlier executed evidence rather than a fresh run, it is stated explicitly.
 
 ## Automated quality gates
 
@@ -12,7 +11,7 @@ evidence rather than a fresh run, it says so explicitly.
 | `npm ci`                                                                                               | PASS   |
 | `npm run typecheck` (4 workspaces, strict)                                                             | PASS   |
 | `npm run lint` (zero findings)                                                                         | PASS   |
-| `npm test` (6 files, 34 tests)                                                                         | PASS   |
+| `npm test` (6 files, 35 tests)                                                                         | PASS   |
 | `npm run build:web` (production)                                                                       | PASS   |
 | Android `assembleDebug`                                                                                | PASS   |
 | Android `assembleRelease`                                                                              | PASS   |
@@ -20,7 +19,7 @@ evidence rather than a fresh run, it says so explicitly.
 | iOS simulator build (`xcodebuild -workspace ibit.xcworkspace -scheme ibit -sdk iphonesimulator build`) | PASS   |
 
 The test suites cover the deletion model (identity preservation, idempotency,
-strict threshold semantics), mock-data determinism and avatar tri-state
+strict threshold semantics), mock-data determinism and avatar state
 distribution, initials/color rules, and the Avatar component rendered through
 React Native Web.
 
@@ -29,8 +28,7 @@ React Native Web.
 Verified **live** with Playwright against the production build served via
 `vite preview`:
 
-- Boots with no application errors; the console contains only
-  `ERR_NAME_NOT_RESOLVED` entries for the intentionally broken avatar hosts.
+- Boots with no application errors and no deliberate network/DNS errors.
 - Desktop frame measures exactly 475px wide, centered, with the bezel chrome.
 - Exactly 1,000 rows: content scroll height is 72,000px (1000 × 72).
 - Virtualization holds: deep-scrolling to a 40,000px offset leaves only 30
@@ -41,9 +39,9 @@ Verified **live** with Playwright against the production build served via
   decreases by exactly 72 each time).
 - Vertical drags neither move nor delete rows; wheel scrolling works —
   horizontal-gesture vs vertical-scroll arbitration behaves.
-- Avatar tri-state visible in the DOM: photos load, missing URLs show
-  initials, broken URLs trigger the `onError` fallback with no invalid-host
-  images remaining.
+- Both avatar states visible in the DOM: photos load and missing URLs show
+  initials; the broken-image `onError` fallback is covered by Avatar unit
+  tests instead of live broken URLs.
 - Mouse drag drives the full swipe lifecycle (touch shares the same gesture
   path).
 
@@ -71,12 +69,18 @@ run covered both behaviors, including a full 1,000-deletion marathon.
 - Simulator build passes: `xcodebuild -workspace ibit.xcworkspace -scheme ibit
 -sdk iphonesimulator build` exits 0.
 - Launch, render and avatar fallback (photos and initials) verified via a
-  same-day clean-room simulator artifact reviewed during the audit.
-- **Interactive swipe was not re-executed during the final audit** — no
-  simulator touch-injection tooling was available. The disclosure is
-  deliberate: the iOS app runs the identical shared JavaScript/worklet
-  pipeline verified live on Web and captured on Android, but a manual drag on
-  the simulator remains the one check left to the reviewer.
+  clean-room simulator capture; app confirmed stable for 30+ seconds post-launch
+  with no runtime errors.
+- **Interactive swipe not verified** — touch injection is not possible in this
+  environment. In the final pre-submission pass the app was launched again via
+  `npm run ios` and render was re-confirmed by simulator screenshot; synthetic
+  mouse clicks do reach the Simulator, but synthetic mouse drags (cliclick,
+  with Accessibility granted) are not translated into touch gestures, and no
+  touch-injection tooling (`idb`, `simctl` input) is available. The disclosure
+  is deliberate: the iOS app runs the identical
+  shared JavaScript/worklet pipeline verified live on Web and captured on
+  Android, but a manual drag on the simulator remains the one check left to
+  the reviewer.
 
 ## Performance
 
@@ -104,9 +108,6 @@ Warnings a reviewer may reasonably encounter:
 - **Vite chunk-size warning** — the production bundle is a single ~703KB JS
   chunk (~209KB gzip). Acknowledged trade-off for an app of this size;
   code-splitting is deliberately not configured.
-- **Console `ERR_NAME_NOT_RESOLVED` entries** — produced exclusively by the
-  intentionally broken avatar URLs in the mock data, which exist to exercise
-  the fallback. Not application errors.
 - **RNW deprecation notice** about `props.pointerEvents` — originates from the
   swipe background's `pointerEvents="none"` prop; harmless and cosmetic.
 - **No dependency build-script allowlisting needed** — npm runs dependency

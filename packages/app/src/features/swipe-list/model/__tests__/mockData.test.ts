@@ -4,7 +4,6 @@ import { describe, expect, it } from "vitest";
 import { createMockItems } from "../mockData";
 
 const VALID_AVATAR_PREFIX = "https://i.pravatar.cc/";
-const BROKEN_AVATAR_HOST = "invalid-avatars.example.com";
 
 describe("createMockItems", () => {
   const items = createMockItems(1000);
@@ -25,22 +24,26 @@ describe("createMockItems", () => {
     expect(createMockItems(1000)).toEqual(createMockItems(1000));
   });
 
-  it("covers all three avatar states with at least 10% each", () => {
+  it("covers both avatar states in the fixed 80/20 split", () => {
     let valid = 0;
     let missing = 0;
-    let broken = 0;
     for (const item of items) {
       if (item.avatarUrl === undefined) {
         missing += 1;
       } else if (item.avatarUrl.startsWith(VALID_AVATAR_PREFIX)) {
         valid += 1;
-      } else if (item.avatarUrl.includes(BROKEN_AVATAR_HOST)) {
-        broken += 1;
       }
     }
-    expect(valid).toBeGreaterThanOrEqual(100);
-    expect(missing).toBeGreaterThanOrEqual(100);
-    expect(broken).toBeGreaterThanOrEqual(100);
+    expect(valid).toBe(800);
+    expect(missing).toBe(200);
+  });
+
+  it("never points at any host other than i.pravatar.cc", () => {
+    for (const item of items) {
+      if (item.avatarUrl !== undefined) {
+        expect(item.avatarUrl.startsWith("https://i.pravatar.cc/")).toBe(true);
+      }
+    }
   });
 
   it("never uses Math.random (data generation is pure)", () => {

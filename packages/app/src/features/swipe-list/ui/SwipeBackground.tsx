@@ -35,7 +35,6 @@ export function SwipeBackground({
   return (
     <Animated.View
       style={[styles.background, backgroundStyle]}
-      pointerEvents="none"
     >
       <Text style={styles.affordance}>Delete</Text>
       <Text style={styles.affordance}>Delete</Text>
@@ -55,6 +54,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 24,
+    pointerEvents: "none",
   },
   affordance: {
     color: colors.surface,

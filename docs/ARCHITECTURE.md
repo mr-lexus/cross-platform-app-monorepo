@@ -87,10 +87,9 @@ all 1,000 rows would each carry gesture handlers and animated nodes regardless
 of visibility. Virtualization keeps only the visible window mounted —
 deep-scroll verification measured 30 mounted rows at a 40,000px offset.
 
-FlashList was considered and rejected: its recycling model conflicts with
-per-row Reanimated SharedValues (a recycled row would inherit stale gesture
-state), and with fixed heights `getItemLayout` already removes measurement
-cost, which is FlashList's main advantage.
+FlashList was unnecessary for this fixed-height 1,000-row case. Its recycling
+model would require explicit reset bookkeeping for per-row SharedValues, while
+FlatList with `getItemLayout` already met the performance requirements.
 
 ## Gesture and animation pipeline
 
@@ -161,8 +160,9 @@ ceremony.
   small palette, so a given person always gets the same color.
 - `accessibilityLabel={name}`; initials are hidden from accessibility when the
   photo is shown.
-- Mock data exercises all three states by construction (50% valid /
-  30% missing / 20% intentionally broken host).
+- Mock data exercises both remaining states by construction (80% valid /
+  20% missing); the broken-image fallback is exercised by Avatar unit tests
+  rather than live unresolvable URLs.
 
 ## Platform-specific concerns
 
@@ -226,9 +226,9 @@ Real trade-offs, made consciously:
 
 - **Manual deletion lifecycle** instead of Reanimated layout animations: more
   explicit code, but immune to the FlatList/Android layout-animation bug.
-- **`withTiming` snap-back** instead of `withSpring`: slightly less organic on
-  native, but deterministic and identical across all three platforms (springs
-  are unsupported on the RNW layout path).
+- **`withTiming` snap-back** instead of `withSpring`: chosen to match the
+  reference prototype's easing and keep the interaction deterministic across
+  platforms.
 - **Debug-signed release build** (RN template default): acceptable for an
   assignment; production distribution would need real signing keys.
 - **Single Vite chunk** (~703KB raw / ~209KB gzip): code-splitting would add
