@@ -24,13 +24,13 @@ motion kept off the React render path.
 
 ## Tech stack
 
-| Concern | Choice |
-| --- | --- |
-| UI runtime | React 19 · React Native 0.87 (New Architecture) · React Native Web 0.21 |
-| Gestures / animation | React Native Gesture Handler 3 · Reanimated 4 (+ worklets) |
-| Language | TypeScript 5.9, strict mode |
-| Web bundler | Vite 7 |
-| Workspace / tooling | pnpm 10 workspaces · Vitest 3 · ESLint 9 |
+| Concern              | Choice                                                                  |
+| -------------------- | ----------------------------------------------------------------------- |
+| UI runtime           | React 19 · React Native 0.87 (New Architecture) · React Native Web 0.21 |
+| Gestures / animation | React Native Gesture Handler 3 · Reanimated 4 (+ worklets)              |
+| Language             | TypeScript 5.9, strict mode                                             |
+| Web bundler          | Vite 7                                                                  |
+| Workspace / tooling  | npm workspaces · Vitest 3 · ESLint 9                                    |
 
 No Expo — the native apps are bare React Native projects.
 
@@ -52,16 +52,14 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how this is wired and why.
 
 Prerequisites:
 
-| Tool | Version | Needed for |
-| --- | --- | --- |
-| Node.js | ≥ 22.13 | everything |
-| pnpm 10 | via Corepack | everything |
-| JDK 17 + Android Studio / SDK | recent | Android |
-| Xcode + CocoaPods ≥ 1.15 | recent (macOS only) | iOS |
+| Tool                          | Version             | Needed for |
+| ----------------------------- | ------------------- | ---------- |
+| Node.js                       | ≥ 22.13             | everything |
+| JDK 17 + Android Studio / SDK | recent              | Android    |
+| Xcode + CocoaPods ≥ 1.15      | recent (macOS only) | iOS        |
 
 ```bash
-corepack enable
-pnpm install
+npm install
 
 npm run web        # Vite dev server → http://localhost:5173
 npm run ios        # pod install + build + launch on an iOS simulator
@@ -70,8 +68,6 @@ npm run android    # build + launch on an Android emulator/device
 
 Notes:
 
-- `npm run` works even though packages are managed by pnpm: the root scripts
-  are thin delegates (`pnpm --filter …`) and npm executes only their bodies.
 - `npm run ios` chains `pod install`, so a fresh clone needs no manual
   CocoaPods step (first run takes a few minutes).
 - Native runs need a booted simulator/emulator or an attached device.
@@ -79,10 +75,10 @@ Notes:
 ## Quality checks
 
 ```bash
-pnpm typecheck     # tsc across all four workspaces (strict)
-pnpm lint          # ESLint flat config
-pnpm test          # Vitest — 34 tests across 6 files
-pnpm build:web     # production web build → apps/web/dist
+npm run typecheck  # tsc across all four workspaces (strict)
+npm run lint       # ESLint flat config
+npm test           # Vitest — 34 tests across 6 files
+npm run build:web  # production web build → apps/web/dist
 ```
 
 All four pass at the current commit. Per-check results and platform

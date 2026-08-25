@@ -7,17 +7,17 @@ evidence rather than a fresh run, it says so explicitly.
 
 ## Automated quality gates
 
-| Check | Result |
-| --- | --- |
-| `pnpm install --frozen-lockfile` | PASS |
-| `pnpm typecheck` (4 workspaces, strict) | PASS |
-| `pnpm lint` (zero findings) | PASS |
-| `pnpm test` (6 files, 34 tests) | PASS |
-| `pnpm build:web` (production) | PASS |
-| Android `assembleDebug` | PASS |
-| Android `assembleRelease` | PASS |
-| Android `bundleRelease` (AAB) | PASS |
-| iOS simulator build (`xcodebuild -workspace ibit.xcworkspace -scheme ibit -sdk iphonesimulator build`) | PASS |
+| Check                                                                                                  | Result |
+| ------------------------------------------------------------------------------------------------------ | ------ |
+| `npm ci`                                                                                               | PASS   |
+| `npm run typecheck` (4 workspaces, strict)                                                             | PASS   |
+| `npm run lint` (zero findings)                                                                         | PASS   |
+| `npm test` (6 files, 34 tests)                                                                         | PASS   |
+| `npm run build:web` (production)                                                                       | PASS   |
+| Android `assembleDebug`                                                                                | PASS   |
+| Android `assembleRelease`                                                                              | PASS   |
+| Android `bundleRelease` (AAB)                                                                          | PASS   |
+| iOS simulator build (`xcodebuild -workspace ibit.xcworkspace -scheme ibit -sdk iphonesimulator build`) | PASS   |
 
 The test suites cover the deletion model (identity preservation, idempotency,
 strict threshold semantics), mock-data determinism and avatar tri-state
@@ -69,7 +69,7 @@ run covered both behaviors, including a full 1,000-deletion marathon.
 ## iOS
 
 - Simulator build passes: `xcodebuild -workspace ibit.xcworkspace -scheme ibit
-  -sdk iphonesimulator build` exits 0.
+-sdk iphonesimulator build` exits 0.
 - Launch, render and avatar fallback (photos and initials) verified via a
   same-day clean-room simulator artifact reviewed during the audit.
 - **Interactive swipe was not re-executed during the final audit** — no
@@ -109,8 +109,9 @@ Warnings a reviewer may reasonably encounter:
   the fallback. Not application errors.
 - **RNW deprecation notice** about `props.pointerEvents` — originates from the
   swipe background's `pointerEvents="none"` prop; harmless and cosmetic.
-- **pnpm "ignored build scripts: esbuild" notice** — pnpm 10's default
-  script-blocking notice; the toolchain works as verified.
+- **No dependency build-script allowlisting needed** — npm runs dependency
+  build scripts by default, so esbuild's postinstall executes without any
+  extra step.
 - **Node engine warning** — the repo requires Node ≥ 22.13 (CI pins Node 22);
   older Node versions print an engine warning while all gates still pass.
 - **Web animation runtime** — on Web, Reanimated runs on the main thread

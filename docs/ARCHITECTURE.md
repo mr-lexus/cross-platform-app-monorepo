@@ -43,8 +43,8 @@ Dependency rules:
 - Shared packages ship TypeScript source with no build step: Metro transforms
   them via `watchFolders`, Vite transpiles them through `@vitejs/plugin-react`.
   In both bundlers the worklets Babel plugin must run last in the pipeline.
-- pnpm runs with `node-linker=hoisted` (`.npmrc`) because Metro, Gradle and
-  CocoaPods expect a conventional hoisted `node_modules`.
+- npm workspaces hoist dependencies into a conventional root `node_modules` —
+  the layout Metro, Gradle and CocoaPods expect.
 
 ## Cross-platform strategy
 
@@ -55,12 +55,12 @@ no `.web.tsx` / `.native.tsx` splits anywhere in the repository).
 
 What is shared versus platform-specific:
 
-| Layer | Location | Contents |
-| --- | --- | --- |
-| Shared application code | `packages/app`, `packages/ui` | List screen, swipeable row, deletion model, theme, Avatar |
-| Web shell | `apps/web` | `main.tsx`, Vite config, ~44 lines of desktop bezel CSS |
-| Native shell | `apps/mobile` | `index.js`, Metro/Babel config, Metro-ensure script |
-| Generated native projects | `apps/mobile/{ios,android}` | Xcode / Gradle projects, essentially untouched template output |
+| Layer                     | Location                      | Contents                                                       |
+| ------------------------- | ----------------------------- | -------------------------------------------------------------- |
+| Shared application code   | `packages/app`, `packages/ui` | List screen, swipeable row, deletion model, theme, Avatar      |
+| Web shell                 | `apps/web`                    | `main.tsx`, Vite config, ~44 lines of desktop bezel CSS        |
+| Native shell              | `apps/mobile`                 | `index.js`, Metro/Babel config, Metro-ensure script            |
+| Generated native projects | `apps/mobile/{ios,android}`   | Xcode / Gradle projects, essentially untouched template output |
 
 The large majority of authored application code is shared between platforms;
 the shells exist to bootstrap the same `@ibit/app` tree on each runtime.

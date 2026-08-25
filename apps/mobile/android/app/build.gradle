@@ -6,10 +6,11 @@ apply plugin: "com.facebook.react"
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
  */
-// Monorepo (pnpm, hoisted node_modules at the workspace root): the plugin's
-// defaults point at ../../node_modules next to the app, which does not exist
-// here. .npmrc pins node-linker=hoisted, so the workspace-root node_modules
-// location is deterministic (android/app -> ../../../../ = repo root).
+// Monorepo (npm workspaces, hoisted node_modules at the workspace root): the
+// plugin's defaults point at ../../node_modules next to the app, which does
+// not exist here. npm hoists dependencies into the workspace-root
+// node_modules, so that location is deterministic
+// (android/app -> ../../../../ = repo root).
 react {
     /* Folders */
     //   The root of your project, i.e. where "package.json" lives. Default is '../..'
@@ -21,7 +22,7 @@ react {
     //   The cli.js file which is the React Native CLI entrypoint. Default is ../../node_modules/react-native/cli.js
     cliFile = file("../../../../node_modules/react-native/cli.js")
 
-    // Hoisted pnpm monorepo: hermesc ships in the hermes-compiler npm package at the
+    // Hoisted npm-workspaces monorepo: hermesc ships in the hermes-compiler npm package at the
     // workspace root, while the plugin's auto-detection looks under apps/mobile/node_modules.
     // %OS-BIN% is substituted by the plugin (osx-bin / linux-bin / win64-bin).
     hermesCommand = file("../../../../node_modules/hermes-compiler/hermesc/%OS-BIN%/hermesc").absolutePath

@@ -10,7 +10,7 @@
     "typecheck": "tsc -p ."
   },
   "dependencies": {
-    "@ibit/ui": "workspace:*"
+    "@ibit/ui": "*"
   },
   "peerDependencies": {
     "react": ">=19",

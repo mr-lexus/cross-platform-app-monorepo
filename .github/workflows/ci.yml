@@ -15,20 +15,17 @@ jobs:
         with:
           node-version: 22
 
-      - name: Enable corepack (pnpm 10 via packageManager field)
-        run: corepack enable
-
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Typecheck
-        run: pnpm typecheck
+        run: npm run typecheck
 
       - name: Lint
-        run: pnpm lint
+        run: npm run lint
 
       - name: Unit tests
-        run: pnpm test
+        run: npm test
 
       - name: Production web build
-        run: pnpm build:web
+        run: npm run build:web
