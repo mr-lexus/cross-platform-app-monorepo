@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import {
   FlatList,
   Pressable,
@@ -10,22 +10,27 @@ import {
 import type { ListRenderItemInfo } from "react-native";
 
 import { colors, ROW_HEIGHT } from "../../../shared/theme";
-import { createMockItems } from "../model/mockData";
-import { deleteItem } from "../model/deleteItem";
 import type { MessageItem } from "../model/types";
+import { useSwipeListStore } from "../model/store";
 import { SwipeableRow } from "./SwipeableRow";
 
 const SHELL_MAX_WIDTH = 475;
-const ITEM_COUNT = 1000;
 
 export function SwipeListScreen() {
-  const [items, setItems] = useState(() => createMockItems(ITEM_COUNT));
+  // Narrow subscriptions: one selector per slice so the component re-renders
+  // only when `items` changes; actions are stable store references.
+  const items = useSwipeListStore((state) => state.items);
+  const removeItem = useSwipeListStore((state) => state.removeItem);
+  const reset = useSwipeListStore((state) => state.reset);
   const { width: windowWidth } = useWindowDimensions();
   const containerWidth = Math.min(windowWidth, SHELL_MAX_WIDTH);
 
-  const onDelete = useCallback((id: string) => {
-    setItems((prev) => deleteItem(prev, id));
-  }, []);
+  const onDelete = useCallback(
+    (id: string) => {
+      removeItem(id);
+    },
+    [removeItem],
+  );
 
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<MessageItem>) => (
@@ -39,8 +44,8 @@ export function SwipeListScreen() {
   );
 
   const resetList = useCallback(() => {
-    setItems(() => createMockItems(ITEM_COUNT));
-  }, []);
+    reset();
+  }, [reset]);
 
   return (
     <View style={styles.container}>

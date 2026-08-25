@@ -10,7 +10,8 @@
     "typecheck": "tsc -p ."
   },
   "dependencies": {
-    "@ibit/ui": "*"
+    "@ibit/ui": "*",
+    "zustand": "^5.0.15"
   },
   "peerDependencies": {
     "react": ">=19",

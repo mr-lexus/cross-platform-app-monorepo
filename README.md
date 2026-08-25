@@ -18,7 +18,7 @@ motion kept off the React render path.
   paths fall back to deterministic colored initials
 - Bidirectional swipe-to-delete (left or right)
 - Strict threshold: past 120px deletes, below it the row snaps back
-- Animated removal: slide-out → collapse → a single React state commit
+- Animated removal: slide-out → collapse → a single Zustand state update
 - Web supports mouse drag and touch; vertical scrolling wins over horizontal
   drags on every platform
 - The same application code runs on iOS, Android and Web
@@ -29,6 +29,7 @@ motion kept off the React render path.
 | -------------------- | ----------------------------------------------------------------------- |
 | UI runtime           | React 19 · React Native 0.87 (New Architecture) · React Native Web 0.21 |
 | Gestures / animation | React Native Gesture Handler 3 · Reanimated 4 (+ worklets)              |
+| State management     | Zustand 5                                                               |
 | Language             | TypeScript 5.9, strict mode                                             |
 | Web bundler          | Vite 7                                                                  |
 | Workspace / tooling  | npm workspaces · Vitest 3 · ESLint 9                                    |
@@ -78,7 +79,7 @@ Notes:
 ```bash
 npm run typecheck  # tsc across all four workspaces (strict)
 npm run lint       # ESLint flat config
-npm test           # Vitest — 35 tests across 6 files
+npm test           # Vitest — 40 tests across 7 files
 npm run build:web  # production web build → apps/web/dist
 ```
 
@@ -94,12 +95,13 @@ verification: [docs/VERIFICATION.md](docs/VERIFICATION.md).
   memoized rows with stable callbacks so a deletion re-renders nothing else.
 - Gestures write Reanimated SharedValues inside worklets; animated styles
   read them directly — no per-frame React state.
-- React state is updated once per deletion, after the removal animation
-  commits (`scheduleOnRN`).
+- The message list lives in a small Zustand store (items + remove/reset);
+  one `scheduleOnRN` call commits each completed deletion into it.
 - Deterministic avatar fallback: initials are always rendered beneath the
   image, so error handling causes zero layout shift.
-- Local React state chosen deliberately over a global store — one list, one
-  operation, one reset.
+- Durable feature state in Zustand; transient gesture/animation state in
+  Reanimated SharedValues — per-frame interaction never enters the
+  React/Zustand render path.
 
 ## Platform notes
 

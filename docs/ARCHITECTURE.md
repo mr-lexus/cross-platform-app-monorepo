@@ -102,7 +102,7 @@ flowchart TD
     E -->|"drag ≤ 120px, or canceled"| F["Snap-back<br/>300ms · bezier(0.25, 1, 0.5, 1)"]
     E -->|"drag strictly beyond 120px"| G["Slide-out 200ms<br/>direction × containerWidth"]
     G --> H["Collapse 150ms<br/>height → 0 · opacity fades"]
-    H --> I["scheduleOnRN onDelete(id)<br/>single React state update"]
+    H --> I["scheduleOnRN removeItem(id)<br/>single Zustand state update"]
 ```
 
 Key properties:
@@ -133,19 +133,28 @@ Key properties:
 
 ## State management
 
-Local React state, deliberately:
+State is split by lifetime:
 
-```tsx
-const [items, setItems] = useState(() => createMockItems(1000));
-```
+- **Zustand owns durable application state** for the swipe-list feature: the
+  message collection plus two actions (`removeItem`, `reset`). The store is a
+  single `create()` call in
+  `packages/app/src/features/swipe-list/model/store.ts` — no middleware, no
+  providers, no slices. Initial and reset state reuse the deterministic
+  `createMockItems(1000)` dataset, and removal delegates to the same pure,
+  identity-preserving `deleteItem` filter as before, so memoized rows still
+  skip re-render on deletion.
+- **Reanimated SharedValues own transient gesture/animation state**
+  (`translateX`, row height, deletion-lifecycle flags). They live and animate
+  on the UI runtime; React never renders during a drag.
 
-The feature has one collection, one operation (delete), and one reset. A store
-library would add a dependency, provider wiring and indirection without
-removing any complexity that actually exists. `deleteItem` is a pure,
-identity-preserving `filter`: survivors keep object identity, which is exactly
-what lets memoized rows skip re-render. If scope grew (filters, multiple
-screens, server sync), a store would become justified — at this size it is
-ceremony.
+The separation keeps per-frame interaction updates out of the React/Zustand
+render path: a swipe writes SharedValues inside worklets, and only the
+completed deletion crosses over via one `scheduleOnRN(removeItem, id)` call.
+
+Zustand was chosen because the assignment requires a state manager: its small
+hook-based API works identically in the shared Web/RN package with no provider
+boilerplate, and components subscribe through narrow selectors (`items`,
+`removeItem`, `reset`) instead of the whole store.
 
 ## Avatar
 
@@ -211,7 +220,6 @@ Scope discipline, not missing functionality:
 - **Persistence** — the assignment defines an in-memory list; a storage seam
   would be dead abstraction.
 - **Navigation** — one screen; a router adds weight with nothing to route.
-- **Global state manager** — covered above; local state is the right size.
 - **Design-system dependency** — two primitives and a theme file cover the
   surface; adopting a library would outsource roughly two hundred lines of
   styling.
