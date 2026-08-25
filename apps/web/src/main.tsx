@@ -1,4 +1,3 @@
-import "react-native-gesture-handler";
 import { createRoot } from "react-dom/client";
 
 import { App } from "@ibit/app";

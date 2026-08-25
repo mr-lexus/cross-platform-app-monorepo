@@ -116,6 +116,14 @@ verification: [docs/VERIFICATION.md](docs/VERIFICATION.md).
   deterministic across platforms.
 - Avatars load from `i.pravatar.cc`; offline runs show the initials fallback
   for those rows — the fallback working as designed.
+- **Known development warning:** React Native 0.87 reports
+  `DrawerLayoutAndroid is deprecated` while loading
+  `react-native-gesture-handler` 3.2.1. The application does not use
+  `DrawerLayoutAndroid`; the warning originates from RNGH's public entry point
+  evaluating its legacy compatibility exports. We intentionally keep the
+  supported public RNGH API rather than suppressing the warning or relying on
+  deep imports, dependency patches, or a React Native downgrade. See
+  [docs/VERIFICATION.md](docs/VERIFICATION.md) for details.
 
 ## Verification
 
