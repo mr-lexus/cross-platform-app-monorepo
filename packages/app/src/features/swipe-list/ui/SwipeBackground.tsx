@@ -33,9 +33,7 @@ export function SwipeBackground({
   }));
 
   return (
-    <Animated.View
-      style={[styles.background, backgroundStyle]}
-    >
+    <Animated.View style={[styles.background, backgroundStyle]}>
       <Text style={styles.affordance}>Delete</Text>
       <Text style={styles.affordance}>Delete</Text>
     </Animated.View>

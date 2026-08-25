@@ -11,7 +11,7 @@ earlier executed evidence rather than a fresh run, it is stated explicitly.
 | `npm ci`                                                                                               | PASS   |
 | `npm run typecheck` (4 workspaces, strict)                                                             | PASS   |
 | `npm run lint` (zero findings)                                                                         | PASS   |
-| `npm test` (6 files, 35 tests)                                                                         | PASS   |
+| `npm test` (7 files, 40 tests)                                                                         | PASS   |
 | `npm run build:web` (production)                                                                       | PASS   |
 | Android `assembleDebug`                                                                                | PASS   |
 | Android `assembleRelease`                                                                              | PASS   |
@@ -108,8 +108,13 @@ Warnings a reviewer may reasonably encounter:
 - **Vite chunk-size warning** — the production bundle is a single ~703KB JS
   chunk (~209KB gzip). Acknowledged trade-off for an app of this size;
   code-splitting is deliberately not configured.
-- **RNW deprecation notice** about `props.pointerEvents` — originates from the
-  swipe background's `pointerEvents="none"` prop; harmless and cosmetic.
+- **React Native `DrawerLayoutAndroid` deprecation warning** — React Native
+  0.87 reports this while loading `react-native-gesture-handler` 3.2.1. The
+  application does not use `DrawerLayoutAndroid`; the warning originates from
+  RNGH's public entry point evaluating legacy compatibility exports. The
+  project intentionally keeps the supported public RNGH API rather than
+  suppressing the warning, using deep imports, patching the dependency, or
+  downgrading React Native.
 - **No dependency build-script allowlisting needed** — npm runs dependency
   build scripts by default, so esbuild's postinstall executes without any
   extra step.

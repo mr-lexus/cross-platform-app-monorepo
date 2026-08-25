@@ -64,14 +64,15 @@ Prerequisites:
 npm install
 
 npm run web        # Vite dev server → http://localhost:5173
-npm run ios        # pod install + build + launch on an iOS simulator
+npm run ios        # ensure Metro + build + launch on an iOS simulator
 npm run android    # build + launch on an Android emulator/device
 ```
 
 Notes:
 
-- `npm run ios` chains `pod install`, so a fresh clone needs no manual
-  CocoaPods step (first run takes a few minutes).
+- `npm run ios` ensures a servable Metro instance before launching the native
+  app. React Native CLI handles CocoaPods installation when needed, so a fresh
+  clone does not require a separate manual `pod install` step.
 - Native runs need a booted simulator/emulator or an attached device.
 
 ## Quality checks
